@@ -1,0 +1,4 @@
+__pycache__/
+.streamlit/
+Data_Cortex_Nuclear.xls
+mice_protein_expression.zip
