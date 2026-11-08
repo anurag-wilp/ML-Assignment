@@ -19,6 +19,11 @@ st.set_page_config(page_title="Synapse Atlas | Protein models", page_icon="🧬"
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
 .stApp{background:#f0f2ec;color:#16272a;font-family:'DM Sans',sans-serif}
+header,[data-testid="stToolbar"],[data-testid="stDecoration"],#MainMenu,.stDeployButton{display:none!important}
+[data-testid="stHeader"]{background:#f0f2ec;height:0;min-height:0}
+[data-testid="stTabs"] button{color:#16272a!important;background:#f0f2ec!important}
+[data-testid="stTabs"] button[aria-selected="true"]{color:#16272a!important;border-bottom:2px solid #27785e!important}
+[data-testid="stTabs"] button p{color:#16272a!important}
 [data-testid="stSidebar"]{background:#16272a;color:#edf4e9}
 [data-testid="stSidebar"] *{color:#edf4e9}
 [data-testid="stSidebar"] [data-baseweb="select"] *{color:#16272a}
@@ -64,12 +69,14 @@ if data_mode == "Sample holdout":
         st.error("The sample holdout is missing.")
         st.stop()
     data = pd.read_csv(test_path)
+    source_label = "Bundled sample holdout"
 elif upload is None:
     st.info("Upload a labeled test CSV to view evaluation results.")
     st.stop()
 else:
     try:
         data = pd.read_csv(upload)
+        source_label = f"Uploaded: {upload.name}"
     except Exception as exc:
         st.error(f"Could not read this CSV: {exc}")
         st.stop()
@@ -114,12 +121,14 @@ metric_columns = st.columns(6)
 for column, label in zip(metric_columns, ["Accuracy", "AUC", "Precision", "Recall", "F1", "MCC"]):
     value = chosen_scores[label]
     column.metric(label, "—" if pd.isna(value) else f"{value:.3f}")
-st.caption(f"{selected} · {len(data):,} labeled samples · macro averaged class metrics")
+st.caption(f"Source: {source_label} · {len(data):,} labeled samples · {selected} · macro averaged class metrics")
 
 compare_tab, confusion_tab, report_tab = st.tabs(["Model comparison", "Confusion matrix", "Classification report"])
 with compare_tab:
     st.markdown('<div class="section-label">ALL FIVE CLASSIFIERS · THIS TEST SET</div>', unsafe_allow_html=True)
-    st.dataframe(comparison.style.format("{:.3f}").highlight_max(axis=0, color="#d9f1e1"),
+    st.dataframe(comparison.style.format("{:.3f}")
+                 .set_properties(**{"color":INK,"background-color":"#ffffff"})
+                 .highlight_max(axis=0, color="#d9f1e1"),
                  use_container_width=True)
     chart_data = comparison.reset_index().melt(id_vars="Model",
         value_vars=["Accuracy", "AUC", "F1", "MCC"], var_name="Metric", value_name="Score")
@@ -139,7 +148,7 @@ with confusion_tab:
     matrix = confusion_matrix(truth, guess, labels=classes)
     heat = px.imshow(matrix, x=classes, y=classes, text_auto=True, aspect="auto",
         labels={"x":"Predicted class","y":"Actual class","color":"Samples"},
-        color_continuous_scale=[[0,"#f0f2ec"],[.45,MINT],[1,INK]])
+        color_continuous_scale=[[0,"#f0f2ec"],[.55,"#c8e5d4"],[1,"#91c9aa"]])
     heat.update_layout(height=500, margin=dict(l=5,r=5,t=15,b=5),
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
         font=dict(family="DM Sans",size=11,color=INK),
