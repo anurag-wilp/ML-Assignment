@@ -19,8 +19,10 @@ st.set_page_config(page_title="Synapse Atlas | Protein models", page_icon="🧬"
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap');
 .stApp{background:#f0f2ec;color:#16272a;font-family:'DM Sans',sans-serif}
-header,[data-testid="stToolbar"],[data-testid="stDecoration"],#MainMenu,.stDeployButton{display:none!important}
-[data-testid="stHeader"]{background:#f0f2ec;height:0;min-height:0}
+#MainMenu,.stDeployButton{display:none!important}
+[data-testid="stHeader"]{background:#f0f2ec}
+[data-testid="stSidebarCollapsedControl"]{display:flex!important;visibility:visible!important;opacity:1!important}
+[data-testid="stSidebarCollapsedControl"] button{display:flex!important;visibility:visible!important;opacity:1!important}
 [data-testid="stTabs"] button{color:#16272a!important;background:#f0f2ec!important}
 [data-testid="stTabs"] button[aria-selected="true"]{color:#16272a!important;border-bottom:2px solid #27785e!important}
 [data-testid="stTabs"] button p{color:#16272a!important}
