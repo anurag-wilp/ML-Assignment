@@ -65,12 +65,6 @@ with st.sidebar:
     st.markdown("### EVALUATION")
     data_mode = st.radio("Test data", ["Sample holdout", "Upload CSV"])
     upload = st.file_uploader("Labeled test data", type="csv") if data_mode == "Upload CSV" else None
-    if data_mode == "Upload CSV":
-        demo_path = ROOT / "test_data_upload.csv"
-        if demo_path.exists():
-            st.download_button("Download reduced sample CSV", demo_path.read_bytes(),
-                               file_name="test_data_upload.csv", mime="text/csv",
-                               use_container_width=True)
     selected = st.selectbox("Classifier", list(model_files))
     st.caption("CSV must include all protein feature columns and the class target.")
 

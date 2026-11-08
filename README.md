@@ -38,7 +38,7 @@ Precision, recall, F1, and one-vs-rest AUC use macro averaging. MCC is the multi
 
 ## App
 
-Run `python train_models.py`, then `streamlit run app.py`. Upload a labeled CSV containing all protein features and `class`, or choose the supplied holdout. The app loads saved models and reports accuracy, AUC, macro precision/recall/F1, MCC, a confusion map, and a per-class report. Uploaded rows are evaluated without retraining. In upload mode, the sidebar also offers a reduced 54-row sample from the reference holdout for checking that results follow the uploaded file; it will score differently from the full holdout when its selected rows produce a different class mix.
+Run `python train_models.py`, then `streamlit run app.py`. Upload a labeled CSV containing all protein features and `class`, or choose the supplied holdout. The app loads saved models and reports accuracy, AUC, macro precision/recall/F1, MCC, a confusion map, and a per-class report. Uploaded rows are evaluated without retraining.
 
 ## Files
 
@@ -46,7 +46,6 @@ Run `python train_models.py`, then `streamlit run app.py`. Upload a labeled CSV 
 - `train_models.py` — UCI workbook download, stratified split, training, artifact export
 - `model/` — saved models and catalog created by the training script
 - `test_data.csv` — labeled held-out rows created by the training script
-- `test_data_upload.csv` — reproducible 54-row stratified sample for upload-mode comparison
 - `model_scores.csv` — holdout comparison created by the training script
 - `requirements.txt` — runtime dependencies
 
