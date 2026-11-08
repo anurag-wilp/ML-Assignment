@@ -24,9 +24,14 @@ header,[data-testid="stToolbar"],[data-testid="stDecoration"],#MainMenu,.stDeplo
 [data-testid="stTabs"] button{color:#16272a!important;background:#f0f2ec!important}
 [data-testid="stTabs"] button[aria-selected="true"]{color:#16272a!important;border-bottom:2px solid #27785e!important}
 [data-testid="stTabs"] button p{color:#16272a!important}
-[data-testid="stSidebar"]{background:#16272a;color:#edf4e9}
-[data-testid="stSidebar"] *{color:#edf4e9}
-[data-testid="stSidebar"] [data-baseweb="select"] *{color:#16272a}
+[data-testid="stSidebar"]{background:#e5ece5;color:#16272a}
+[data-testid="stSidebar"] *{color:#16272a!important}
+[data-testid="stSidebar"] [data-baseweb="select"] *,
+[data-testid="stSidebar"] [data-baseweb="select"] input{color:#16272a!important;-webkit-text-fill-color:#16272a!important;opacity:1!important}
+[role="listbox"] [role="option"]{color:#16272a!important;background:#fff!important}
+[role="listbox"] [role="option"]:hover{background:#d9e9dd!important}
+[data-testid="stFileUploader"] section{background:#fff!important;border:1px solid #a8b9ad!important}
+[data-testid="stFileUploader"] *{color:#16272a!important}
 [data-testid="stMetric"]{background:#fff;border:1px solid #dfe5da;padding:14px 16px;border-radius:4px 15px 4px 4px}
 [data-testid="stMetricLabel"]{font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.07em;font-size:.67rem;color:#536762}
 [data-testid="stMetricValue"]{font-family:'Manrope',sans-serif;color:#16272a}
@@ -60,6 +65,12 @@ with st.sidebar:
     st.markdown("### EVALUATION")
     data_mode = st.radio("Test data", ["Sample holdout", "Upload CSV"])
     upload = st.file_uploader("Labeled test data", type="csv") if data_mode == "Upload CSV" else None
+    if data_mode == "Upload CSV":
+        demo_path = ROOT / "test_data_upload.csv"
+        if demo_path.exists():
+            st.download_button("Download reduced sample CSV", demo_path.read_bytes(),
+                               file_name="test_data_upload.csv", mime="text/csv",
+                               use_container_width=True)
     selected = st.selectbox("Classifier", list(model_files))
     st.caption("CSV must include all protein feature columns and the class target.")
 
